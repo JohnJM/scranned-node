@@ -28,7 +28,7 @@
         data[key] = value;
       }
 
-      fetch("https://localhost:3000/login", {
+      fetch("/login", {
         method: "POST",
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -42,10 +42,16 @@
       })
         .then((response) => response.json())
         .then((data) => {
+          if(data.error === 'Login failed'){
+            document.body.appendChild(document.createTextNode('Incorrect credientials'))
+            return
+          }
           console.log("Success:", data);
+          document.body.appendChild(document.createTextNode('Success.'))
         })
         .catch((error) => {
           console.error("Error:", error);
+          document.body.appendChild(document.createTextNode('Error. (check console)'))
         });
     });
   </script>
