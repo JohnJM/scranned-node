@@ -7,11 +7,11 @@ import { prisma } from "../../main";
 const hash = async (pwd: string) => bcrypt.hash(pwd, await bcrypt.genSalt());
 
 const createAuthToken = (
-  { id, role }: User,
+  { id, role, username }: User,
   maxAge = 1 * 24 * 60 * 60
 ): [string, number] => {
   return [
-    sign({ id, role }, process.env["JWT_SECRET"] as string, {
+    sign({ id, role, username }, process.env["JWT_SECRET"] as string, {
       expiresIn: maxAge,
     }),
     maxAge,

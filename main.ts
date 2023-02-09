@@ -3,6 +3,7 @@ import { constants } from "./constants";
 import { PrismaClient } from "@prisma/client";
 import { routes } from "./routes";
 import morgan from 'morgan';
+import cookieParser from "cookie-parser";
 
 export const prisma = new PrismaClient();
 
@@ -15,6 +16,7 @@ const main = (app: Express) => {
   const { SERVER_ONLINE_MESSAGE, SERVER_PORT } = constants;
   app.listen(SERVER_PORT, () => console.log(SERVER_ONLINE_MESSAGE));
   app.use(morgan("dev"));
+  app.use(cookieParser());
   app.use(express.json());
   app.use(routes);
 };
