@@ -1,15 +1,12 @@
 import { Ingredient } from "@prisma/client";
 import { Request, Response } from "express";
 import { prisma } from "../../main";
-import { sendUnauthorised } from "../../helpers/sendUnauthorised";
 
 const addIngredients = async (
   { body: { ingredients, userId: ownerId } }: Request,
   res: Response
 ) => {
-  if (!ownerId) return sendUnauthorised(res);
-
-  const data: Ingredient[] = ingredients.map(
+  const ingredientsWithOwner: Ingredient[] = ingredients.map(
     (ingredient: Omit<Ingredient, "ownerId">) => ({
       ownerId,
       ...ingredient,
@@ -17,13 +14,13 @@ const addIngredients = async (
   );
   try {
     const { count } = await prisma.ingredient.createMany({
-      data,
+      data: ingredientsWithOwner,
     });
     return res
       .status(200)
       .json({ success: true, message: `Added ${count} rows` });
   } catch (err) {
-    console.error(err as Error);
+    console.error((err as Error).message);
     return res.status(400).json({ error: "Failed to add Ingredients" });
   }
 };

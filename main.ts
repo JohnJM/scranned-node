@@ -1,8 +1,9 @@
 import express, { Express } from "express";
 import { constants } from "./constants";
 import { PrismaClient } from "@prisma/client";
-import { routes } from "./routes";
-import morgan from 'morgan';
+import { generalRoutes } from "./routes/general";
+import { ingredientRoutes } from "./routes/ingredients";
+import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
 export const prisma = new PrismaClient();
@@ -15,15 +16,11 @@ const createServer = async () => {
 const main = (app: Express) => {
   const { SERVER_ONLINE_MESSAGE, SERVER_PORT } = constants;
   app.listen(SERVER_PORT, () => console.log(SERVER_ONLINE_MESSAGE));
-  app.use(morgan("dev"));
-  app.use(cookieParser());
-  app.use(express.json());
-  app.use(routes);
+  app.use(morgan("dev"), cookieParser(), express.json());
+  app.use(generalRoutes, ingredientRoutes);
 };
 
 createServer()
   .then(main)
   .catch(console.error)
   .finally(() => prisma.$disconnect());
-
-
