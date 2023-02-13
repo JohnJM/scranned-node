@@ -22,6 +22,3 @@ routes.get("/", (_, res) =>
 );
 
 export { routes as generalRoutes };
-
-
-
