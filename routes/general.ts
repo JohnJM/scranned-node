@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response, Router } from "express";
+import { Router } from "express";
 import { login, register } from "../controllers/auth";
 import path from "path";
 

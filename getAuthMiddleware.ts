@@ -1,4 +1,4 @@
-import { Jwt, verify } from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import { User, UserRole } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
 import { sendUnauthorised } from "./helpers/sendUnauthorised";

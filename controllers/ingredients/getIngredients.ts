@@ -13,6 +13,7 @@ const getIngredients = async (
     });
     return res
       .status(200)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .json({ ingredients: ingredients.map(({ ownerId, ...rest }) => rest) });
   } catch (err) {
     console.error((err as Error).message);
