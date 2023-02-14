@@ -6,7 +6,6 @@ const deleteIngredients = async (
   res: Response
 ) => {
   try {
-    let counter = 0;
     await Promise.all(
       ingredientIds.map(async (id: string) => {
         await prisma.ingredient.delete({
@@ -14,12 +13,11 @@ const deleteIngredients = async (
             id,
           },
         });
-        counter++;
       })
     );
     return res
       .status(200)
-      .json({ success: true, message: `Deleted ${counter} rows` });
+      .json({ success: true, message: `Deleted ${ingredientIds.length} rows` });
   } catch (err) {
     console.error((err as Error).message);
     return res.status(400).json({ error: "Failed to delete Ingredients" });

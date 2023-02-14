@@ -15,7 +15,7 @@ const updateIngredient = async (
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error((err as Error).message);
-    return res.status(400).json({ error: "Failed to delete all Ingredients" });
+    return res.status(400).json({ error: "Failed to update ingredients" });
   }
 };
 
