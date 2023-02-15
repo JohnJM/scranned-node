@@ -41,11 +41,12 @@ const login = async (
 ) => {
   try {
     const {
-      user: { email: name },
+      user: { email: name, username },
       token: [token, maxAge],
     } = await getUserData({ email, password });
     res.status(200).cookie("Authorization", token, { maxAge }).json({
-      name,
+      email: name,
+      username,
       token,
     });
   } catch {
