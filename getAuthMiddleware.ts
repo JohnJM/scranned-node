@@ -1,6 +1,7 @@
-import { Jwt, verify } from "jsonwebtoken";
+import { verify } from "jsonwebtoken";
 import { User, UserRole } from "@prisma/client";
 import { Request, Response, NextFunction } from "express";
+import { sendUnauthorised } from "./helpers/sendUnauthorised";
 
 const getAuthMiddleware =
   (roles: UserRole[]) =>
@@ -9,23 +10,19 @@ const getAuthMiddleware =
     res: Response,
     next: NextFunction
   ) => {
-    console.log('hit ->', token);
-    
     if (!token) return sendUnauthorised(res);
     try {
-      const { role, username } = verify(
+      const { role, email, id } = verify(
         token,
         process.env["JWT_SECRET"] as string
       ) as User;
       if (!roles.includes(role as UserRole)) return sendUnauthorised(res);
-      body.username = username
+      body.email = email;
+      body.userId = id;
       next();
     } catch {
       return sendUnauthorised(res);
     }
   };
-
-const sendUnauthorised = (res: Response): Response =>
-  res.status(403).json({ error: "Unauthorised" }).end();
 
 export default getAuthMiddleware;
