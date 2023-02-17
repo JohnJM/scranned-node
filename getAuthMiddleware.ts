@@ -5,8 +5,8 @@ import { sendUnauthorised } from "./helpers/sendUnauthorised";
 
 const getAuthMiddleware =
   (roles: UserRole[]) =>
-  ({ body }: Request, res: Response, next: NextFunction) => {
-    const { Authorization: token } = body;
+  ({ body, headers }: Request, res: Response, next: NextFunction) => {
+    const { authorization: token } = headers;
     if (!token) return sendUnauthorised(res);
     try {
       const { role, email, id } = verify(
